@@ -8,14 +8,11 @@ Same API, same endpoints — the in-memory task list has been replaced with a re
 - SQLite via Python's built-in `sqlite3` module (raw SQL, parameterized queries)
 
 ## Why SQLite
-SQLite needs no separate server or installation — the entire database is a single file
-(`tasks.db`) on disk. That's ideal for a small project like this: zero setup, and data now
-survives a server restart, which was the whole limitation in Assignment 1 (in-memory storage).
+SQLite needs no separate server or installation — the entire database is a single file (`tasks.db`) on disk. That's ideal for a small project like this: zero setup, and data now survives a server restart, which was the whole limitation in Assignment 1 (in-memory storage).
 
 ## Where the database lives
 - File: `tasks.db`, created automatically in the project root the first time the app runs.
-- It is **git-ignored** — every fresh clone starts with no database file, and the app creates
-  it (and seeds 3 example tasks) automatically on first run.
+- It is **git-ignored** — every fresh clone starts with no database file, and the app creates it (and seeds 3 example tasks) automatically on first run.
 
 ## How to run
 ```bash
@@ -39,8 +36,7 @@ Server runs at `http://localhost:8000`. Interactive docs at `http://localhost:80
 | DELETE | `/tasks/{id}`     | Delete a task                | 204     | 404 unknown id      |
 
 ## Persistence proof
-Created tasks via `POST /tasks`, restarted the `uvicorn` server, then called `GET /tasks` —
-tasks were still present. Data no longer disappears on restart.
+Created tasks via `POST /tasks`, restarted the `uvicorn` server, then called `GET /tasks` — tasks were still present. Data no longer disappears on restart.
 
 ## Stage 4 — exploring SQLite directly
 
@@ -50,9 +46,7 @@ Opened `tasks.db` in **DB Browser for SQLite** and ran queries by hand in the Ex
 UPDATE tasks SET done = 1;
 ```
 
-Result: 3 rows affected. After clicking "Write Changes," calling `GET /tasks` immediately
-reflected the change with no server restart — proof that the API and DB Browser read the
-exact same file, with no syncing involved:
+Result: 3 rows affected. After clicking "Write Changes," calling `GET /tasks` immediately reflected the change with no server restart — proof that the API and DB Browser read the exact same file, with no syncing involved:
 
 ```json
 [{"id":1,"title":"Buy milk","done":1},
@@ -63,6 +57,9 @@ exact same file, with no syncing involved:
 ![DB Browser view](screenshots/db-browser-view.png)
 ![curl after UPDATE](screenshots/curl-after-update.png)
 ![curl after DELETE](screenshots/curl-after-delete.png)
+
+## Issues encountered
+Initially saw duplicate seed rows (6 instead of 3) caused by `uvicorn --reload`'s watcher process re-triggering module-level `init_db()`. Fixed by moving seeding into a FastAPI `@app.on_event("startup")` handler so it only runs once per actual server start.
 
 ## AI disclosure
 Used Claude for guidance and code structure. Implemented, ran, and understood every stage myself, including the DB Browser exploration in Stage 4.
