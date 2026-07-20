@@ -2,7 +2,10 @@ from fastapi import FastAPI, HTTPException
 from database import get_connection, init_db
 
 app = FastAPI()
-init_db()   # runs on startup — creates db/table, seeds if empty
+
+@app.on_event("startup")
+def startup():
+    init_db()
 
 @app.get("/")
 def root():
