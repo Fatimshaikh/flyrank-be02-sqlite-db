@@ -1,6 +1,6 @@
 # FlyRank BE-02 — Connecting your CRUD to the database
 
-Continuation of [flyrank-be01-crud-api](https://github.com/<your-username>/flyrank-be01-crud-api).
+Continuation of [flyrank-be01-crud-api](https://github.com/Fatimshaikh/flyrank-be01-crud-api).
 Same API, same endpoints — the in-memory task list has been replaced with a real SQLite database.
 
 ## Stack
@@ -16,7 +16,7 @@ SQLite needs no separate server or installation — the entire database is a sin
 
 ## How to run
 ```bash
-git clone https://github.com/<your-username>/flyrank-be02-sqlite-db.git
+git clone https://github.com/Fatimshaikh/flyrank-be02-sqlite-db.git
 cd flyrank-be02-sqlite-db
 python -m venv venv
 source venv/Scripts/activate      # Windows Git Bash
